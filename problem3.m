@@ -16,18 +16,26 @@ for i=1:K
     image(r(K+i),r(K+i+1),:);
     k_centers(i,1,:) = image(r(K+i),r(K+i+1),:);
 end
-k_centers
-first = true;
-while ~isequal(k_centers,new_centers)||first
-    if ~first
+
+k_centers;
+first=1;
+
+while 1
+    if first == 0
+        k_centers
         k_centers(:) = new_centers(:);
+        k_centers
     end
-    first = false;
+    if ~isequal(k_centers,new_centers)
+        break;
+    end
+    first = 0;
     for i=1:200
         for j=1:200
             for n=1:K
                 ddist(n) = distance('eucleidian',k_centers(n,1,:),image(i,j,:));
             end
+            ddist;
             [M,I] = min(ddist);
             point_in(I) = point_in(I) +1;
             new_centers(I,1,:) = new_centers(I,1,:) + image(i,j,:);
@@ -35,15 +43,15 @@ while ~isequal(k_centers,new_centers)||first
     end
     for n=1:K
         if point_in ~= 0
+            point_in(n)
             new_centers(n) = new_centers(n)./point_in(n);
         end
     end
-    new_centers
 end
 new_im = image;
 for i=1:200
     for j=1:200
-       for n=1:k
+       for n=1:K
             ddist(n) = distance('eucleidian',k_centers(n,1,:),image(i,j,:));
        end
        [M,I] = min(ddist);
