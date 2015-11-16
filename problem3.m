@@ -6,8 +6,11 @@ image = im2double(im(1:200,1:200,:));
 
 %for non randomness comment next line
 rng(0,'twister');
-
+%K=3;
 k_centers=zeros(K,1,3);
+for i=1:K
+    k_centers(i,1,:) = rand(3,1);
+end
 new_centers=zeros(K,1,3);
 point_in=zeros(K,1);
 ddist=zeros(K,1);
@@ -17,14 +20,18 @@ for i=1:K
     k_centers(i,1,:) = image(r(K+i),r(K+i+1),:);
 end
 
+%k_centers(1,1,:) = [0 0 0];
+%k_centers(2,1,:) = [1 1 1];
+%k_centers(1,1,:) = [1 0 0];
+%k_centers(2,1,:) = [0 1 0];
+%k_centers(3,1,:) = [0 0 1];
+
 k_centers;
 first=1;
 
 while 1
     if first == 0
-        k_centers
         k_centers(:) = new_centers(:);
-        k_centers
     end
     if ~isequal(k_centers,new_centers)
         break;
@@ -35,7 +42,6 @@ while 1
             for n=1:K
                 ddist(n) = distance('eucleidian',k_centers(n,1,:),image(i,j,:));
             end
-            ddist;
             [M,I] = min(ddist);
             point_in(I) = point_in(I) +1;
             new_centers(I,1,:) = new_centers(I,1,:) + image(i,j,:);
