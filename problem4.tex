@@ -1,1 +1,68 @@
 \section{Problem 4}
+\subsection{}
+The arithmetic mean of non-negative numbers is at least their geometric mean:
+\begin{align*}
+\frac{x_1 + x_2 + \cdots + x_n}{n} \geq \sqrt[n]{x_1 \cdot  x_2  \cdots x_n}
+\end{align*}
+Jensen's inequality for concave function is:
+\begin{align*}
+f\bigg(\frac{\displaystyle\sum_{i=1}^{n}x_i}{n}\bigg) \geq \frac{\displaystyle\sum_{i=1}^{n}f(x_i)}{n}
+\end{align*}
+Also we know that $f(x) = \log(x)$ is concave for $x > 0$. So we can infer:
+\begin{align*}
+\log\bigg(\frac{\displaystyle\sum_{i=1}^{n}x_i}{n}\bigg) \geq \frac{\displaystyle\sum_{i=1}^{n}\log(x_i)}{n} \Leftrightarrow \\
+\log\bigg(\frac{x_1 + x_2 + \cdots + x_n}{n}\bigg) \geq \frac{\log\displaystyle\prod_{i=1}^{n}(x_i)}{n} \Leftrightarrow \\
+\log\bigg(\frac{x_1 + x_2 + \cdots + x_n}{n}\bigg) \geq \log\displaystyle\prod_{i=1}^{n}(x_i)^\frac{1}{n}
+\end{align*}
+As the log function is always increasing then we can remove the log without changing inequality direction.
+We then have:
+\begin{align*}
+\bigg(\frac{x_1 + x_2 + \cdots + x_n}{n}\bigg) \geq \displaystyle\prod_{i=1}^{n}(x_i)^\frac{1}{n} = \sqrt[n]{x_1 \cdot  x_2  \cdots x_n}
+\end{align*}
+And that is what we wanted to proof.
+\subsection{}
+For this part we will use general Jensen's equality:
+\begin{align*}
+f\bigg(\frac{\displaystyle\sum_{i=1}^{n}a_i \cdot x_i}{\displaystyle\sum_{i=1}^{n}a_i}\bigg) \geq \frac{\displaystyle\sum_{i=1}^{n}a_i\cdot f(x_i)}{\displaystyle\sum_{i=1}^{n}a_i}
+\end{align*}
+Our goal is to prove:
+\begin{align}\label{eq:one}
+\displaystyle\sum_{i=1}^{m}exp(\theta^T f_i) \geq exp(\theta^T \displaystyle\sum_{i=1}^{m}a_i f_i - \displaystyle\sum_{i=1}^{m}a_i\log a_i)
+\end{align}
+where:\\
+%$a_i = \frac{exp(\hat{\theta}^T f_i)}{\sum_{i=1}^{m}exp(\hat{\theta}^T f_i)}$\\
+One first reliazation is that the summation of $a_i$ is equal to 1:
+\begin{align*}
+\displaystyle\sum_{i=1}^{n}a_i = \frac{\displaystyle\sum_{i=1}^{n}exp(\hat{\theta}^T f_i)}{\displaystyle\sum_{i=1}^{m}exp(\hat{\theta}^T f_i)}
+\end{align*}
+Also we can infer that $a_i < 1$ sincewe divide with a normalization constant.\\
+
+So for the left side of our inequality ~\ref{eq:one}, we can write it as:
+\begin{align}\label{eq:left1}
+\displaystyle\sum_{i=1}^{m}exp(\theta^T f_i) = \frac{\displaystyle\sum_{i=1}^{m}exp(\theta^T f_i)}{\displaystyle\sum_{i=1}^{m}a_i} \geq \frac{\displaystyle\sum_{i=1}^{m}a_i exp(\theta^T f_i)}{\displaystyle\sum_{i=1}^{m}a_i}
+\end{align}
+Combining ~\ref{eq:one} and ~\ref{eq:left1} we get
+\begin{align*}
+\frac{\displaystyle\sum_{i=1}^{m}a_i exp(\theta^T f_i)}{\displaystyle\sum_{i=1}^{m}a_i} \geq exp(\theta^T \displaystyle\sum_{i=1}^{m}a_if_i - \displaystyle\sum_{i=1}^{m}a_i\log a_i)
+\end{align*}
+Now having this can we solve as:
+\begin{align*}
+\frac{\displaystyle\sum_{i=1}^{m}a_i exp(\theta^T f_i)}{\displaystyle\sum_{i=1}^{m}a_i} \geq exp(\theta^T \displaystyle\sum_{i=1}^{m}a_i f_i - \displaystyle\sum_{i=1}^{m}a_i\log a_i) \Leftrightarrow \\
+\frac{\displaystyle\sum_{i=1}^{m}a_i exp(\theta^T f_i)}{\displaystyle\sum_{i=1}^{m}a_i} \geq exp(\displaystyle\sum_{i=1}^{m}\theta^T a_i f_i - \displaystyle\sum_{i=1}^{m}a_i\log a_i) \Leftrightarrow \\
+\frac{\displaystyle\sum_{i=1}^{m}a_i exp(\theta^T f_i)}{\displaystyle\sum_{i=1}^{m}a_i} \geq \frac{exp(\displaystyle\sum_{i=1}^{m}\theta^T a_i f_i)}{exp(\displaystyle\sum_{i=1}^{m}a_i\log a_i))} \Leftrightarrow \\
+\frac{\displaystyle\sum_{i=1}^{m}a_i exp(\theta^T f_i)}{\displaystyle\sum_{i=1}^{m}a_i} \geq \frac{exp(\displaystyle\sum_{i=1}^{m}a_i\theta^T f_i)}{exp(\displaystyle\sum_{i=1}^{m}a_i\log a_i))} \Leftrightarrow \\
+\frac{\displaystyle\sum_{i=1}^{m}a_i exp(\theta^T f_i)}{\displaystyle\sum_{i=1}^{m}a_i} \geq \frac{exp(\displaystyle\sum_{i=1}^{m}a_i\theta^T f_i)}{exp(\displaystyle\sum_{i=1}^{m}(\log a_i)^{a_i}))} \Leftrightarrow \\
+\frac{\displaystyle\sum_{i=1}^{m}a_i exp(\theta^T f_i)}{\displaystyle\sum_{i=1}^{m}a_i} \geq \frac{exp(\displaystyle\sum_{i=1}^{m}a_i\theta^T f_i)}{\displaystyle\prod_{i=1}^{m}exp((\log a_i)^{a_i}))} \Leftrightarrow \\
+\frac{\displaystyle\sum_{i=1}^{m}a_i exp(\theta^T f_i)}{\displaystyle\sum_{i=1}^{m}a_i} \geq \frac{exp*\displaystyle\sum_{i=1}^{m}a_i\theta^T f_i)}{\displaystyle\prod_{i=1}^{m}a_i^{a_i}} 
+\end{align*}
+
+From $a_i < 1$ we get that $a_i^{a_i} < 1$. We will use this in our inequality\\
+\begin{align*}
+\frac{\displaystyle\sum_{i=1}^{m}a_i exp(\theta^T f_i)}{\displaystyle\sum_{i=1}^{m}a_i} \geq exp(\displaystyle\sum_{i=1}^{m}a_i\theta^T f_i)
+\end{align*}
+And using the same trick as in ~\ref{eq:one} we are creating an inequality that it holds because of Jensen's inequality
+
+\begin{align}
+\frac{\displaystyle\sum_{i=1}^{m}a_i exp(\theta^T f_i)}{\displaystyle\sum_{i=1}^{m}a_i} \geq exp(\frac{\displaystyle\sum_{i=1}^{m}a_i\theta^T f_i}{\displaystyle\sum_{i=1}^{m}a_i})
+\end{align}
+
