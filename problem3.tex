@@ -31,3 +31,16 @@ of clusters with at least a pixel in.
   \end{subfigure} 
   \caption{Illustration of various K-means clustering}
 \end{figure}
+
+For the initialization and inconsistencies:
+Picking random points as initialization points can lead to empty or weird clusters. Specifying
+more clusters as you can handle can create empty ones (if you run my program with 20 you will get
+only 17 clusters) or the ones that will be created are not distinct. Picking pixels form the image
+can lead to inconsistencies also as you may pick an outlier that will not have any point as cluster.
+Also picking some specific ones (I had done some experiments with 3 clusters(Red, Green, Blue) or 5
+(the previous plus Black and White)) but I did not had any better result. 
+
+In order to solve this problem the community chooses either to run multiple time the K-means and
+pick the best. But still this technique is not guaranteed. Other are running other cluster algorithms
+like hierarchical in order to get some good initial points. Another solution is to remove outliers
+in order to pick some more consistent centroids.
