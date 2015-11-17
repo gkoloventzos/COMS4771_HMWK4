@@ -1,4 +1,4 @@
-function problem3(K)
+function clust = problem3(K)
 
 rawim = Tiff('trees.tif','r');
 im = rawim.readRGBAImage();
@@ -6,37 +6,41 @@ image = im2double(im(1:200,1:200,:));
 
 %for non randomness comment next line
 rng(0,'twister');
-%K=3;
+%K=5;
 k_centers=zeros(K,1,3);
+%random pick
 for i=1:K
     k_centers(i,1,:) = rand(3,1);
 end
 new_centers=zeros(K,1,3);
 point_in=zeros(K,1);
 ddist=zeros(K,1);
+%random pick from image
 r = randi([1, 200],1,1000);
 for i=1:K
     image(r(K+i),r(K+i+1),:);
     k_centers(i,1,:) = image(r(K+i),r(K+i+1),:);
 end
 
+%initialization of non random pick
 %k_centers(1,1,:) = [0 0 0];
 %k_centers(2,1,:) = [1 1 1];
 %k_centers(1,1,:) = [1 0 0];
 %k_centers(2,1,:) = [0 1 0];
 %k_centers(3,1,:) = [0 0 1];
-
-k_centers;
 first=1;
 
 while 1
     if first == 0
         k_centers(:) = new_centers(:);
     end
-    if ~isequal(k_centers,new_centers)
+    if isequal(k_centers,new_centers)
+        clust = sum(point_in(:)~=0);
         break;
     end
+    clusters = 0;
     first = 0;
+    new_centers=zeros(K,1,3);
     for i=1:200
         for j=1:200
             for n=1:K
@@ -49,8 +53,9 @@ while 1
     end
     for n=1:K
         if point_in ~= 0
-            point_in(n)
-            new_centers(n) = new_centers(n)./point_in(n);
+            clusters = clusters + 1;
+            point_in(n);
+            new_centers(n,1,:) = new_centers(n,1,:)./point_in(n);
         end
     end
 end

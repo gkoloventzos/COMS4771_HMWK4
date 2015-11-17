@@ -3,7 +3,7 @@ LATEX=pdflatex
 
 SRCS=$(wildcard *.tex)
 REFS=$(wildcard *.bib)
-FIGS=$(wildcard figures/*)
+FIGS=$(wildcard figures/*.pdf figures/*.png graphs/*.pdf graphs/*.png)
 
 .PHONY: $(assignment).pdf clean
 
