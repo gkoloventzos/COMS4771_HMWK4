@@ -55,8 +55,3 @@ while (iter<maxiter) & ~converged
   plotClust(mu,covar,1,2); hold off;
   drawnow;
 end
-
-    
-    
-    
-    

@@ -25,9 +25,9 @@ end
 %initialization of non random pick
 %k_centers(1,1,:) = [0 0 0];
 %k_centers(2,1,:) = [1 1 1];
-%k_centers(1,1,:) = [1 0 0];
-%k_centers(2,1,:) = [0 1 0];
-%k_centers(3,1,:) = [0 0 1];
+%k_centers(3,1,:) = [1 0 0];
+%k_centers(4,1,:) = [0 1 0];
+%k_centers(5,1,:) = [0 0 1];
 first=1;
 
 while 1
@@ -52,7 +52,7 @@ while 1
         end
     end
     for n=1:K
-        if point_in ~= 0
+        if point_in(n) ~= 0
             clusters = clusters + 1;
             point_in(n);
             new_centers(n,1,:) = new_centers(n,1,:)./point_in(n);
