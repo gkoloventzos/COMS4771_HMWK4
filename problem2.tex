@@ -1,5 +1,5 @@
-\section{Problem 2}
-\subsection{}
+\section*{Problem 2}
+\subsection*{Part A}
 \begin{figure}[ht]
     \centering
   \vspace{-20pt}
@@ -15,3 +15,12 @@
     \vspace{4ex}
 \end{figure}
 \verbatiminput{mixmodelB-3-20.txt}
+\subsection*{Part B}
+Doing Similar calculations with thw exercise 1 we are deriving the necessary
+equations for the Bernoulli mixture models.
+\begin{align*}
+t_{n,k} &= \frac{\pi_{k}\mu_{k}^{x_{n}} (1-\mu_{k})^{1-x_{n}}}{\sum_{k'=1}^K \pi_{k'} \mu_{k'}^{x_{n}}(1-\mu_{k'})^{1-x_n}}\\
+\mu_{k} &= \frac{\sum_{n=1}^N\sum_{i=1}^{D} t_{n,i}x_{n,i}}{D\sum_{n=1}^N t_{n,i}}\\
+\pi_{k} &= \frac{\sum_{n=1}^{N}t_{n,k}}{\sum_{k'=1}^K\sum_{n=1}^{N}t_{n,k}}\\
+L &= \sum_{n=1}^{N}\sum_{k=1}^{K}t_{n,k}(\sum_{i=1}^{D}x_{n,i}\log(\mu_{k})+(1-x_{n,i}\log{1-\mu_{k}}) + \log\pi_{k})
+\end{align*}
