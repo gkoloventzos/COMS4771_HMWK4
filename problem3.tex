@@ -43,4 +43,5 @@ Also picking some specific ones (I had done some experiments with 3 clusters(Red
 In order to solve this problem the community chooses either to run multiple time the K-means and
 pick the best. But still this technique is not guaranteed. Other are running other cluster algorithms
 like hierarchical in order to get some good initial points. Another solution is to remove outliers
-in order to pick some more consistent centroids.
+in order to pick some more consistent centroids. A wide applicable approach as the problem is NP-hard
+is the K-means++ algorithm. Matlab's kmeans function is using the k-meams++ algorithm.
