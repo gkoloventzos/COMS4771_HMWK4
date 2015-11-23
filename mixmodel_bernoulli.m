@@ -17,38 +17,34 @@ ll=-inf;
 
 %my starting ?_k will be 1/M
 p_k = ones(M,1)/M;
+rng('shuffle')
 theta(1:M)= rand(1,M);
 heads = zeros(N,1);
-tails = zeros(N,1);
 
 for i=1:N
     heads(i) = sum(inputs(i,:) == 1);
 end
 
 while (iter<maxiter) & ~converged
-  prev=ll;
-  %tau=ones(N,M);
   for i=1:M
     for n=1:N
-      tau(n,i) = p_k(i)*(theta(i)^heads(n)) * ((1-theta(i))^(N-heads(n)));
+      tau(n,i) = p_k(i)*(theta(i)^heads(n)) * ((1-theta(i))^(D-heads(n)));
     end
   end
-
+  prev=ll;
   ll = 0;
   for n=1:N
       l_n=sum(tau(n,:));
       tau(n,:)=tau(n,:)/l_n;
       for i=1:M
-          ll = ll + tau(n,i) + log(theta(i))*heads(n) + log(1-theta(i))*(N-heads(n)) + log(p_k(i));
+          ll = ll + tau(n,i) + (log(theta(i))*heads(n)) + (log(1-theta(i))*(D-heads(n))) + log(p_k(i));
       end
   end
   
   if (ll-prev<thresh)
     converged=1;
   end
-  like
   like=[like ll];
-  like
   sumsumtau=0;
   for i=1:M
     sumtau(i)=sum(tau(:,i));
@@ -60,6 +56,6 @@ while (iter<maxiter) & ~converged
     theta(i) = theta(i)/(D*sumtau(i));
     p_k(i)=sumtau(i);
   end
-  p_k = p_k./sum(sumtau);
+  p_k = p_k/sum(sumtau);
   iter=iter+1;
 end
