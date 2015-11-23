@@ -1,41 +1,70 @@
 \section*{Problem 1}
 The EM algorithm for multinomial distributions is similar to the Gaussian ones.
-I will use the steps that are also depicted in Bishop's book in chapter 9 for
+I will use similar steps that are also depicted in Bishop's book in chapter 9 for
 Gaussian.
 \begin{align*}
-p(x) = \sum_{k=1}^K \pi_k p(x \mid \mu_k)
+p(x) = \sum_{k=1}^K \pi_k p(x \mid \mu_k)\\
+p(x \mid \mu_k) = \prod_{j=1}^M \mu_k (j)^{x(j)}
 \end{align*}
 also
+We introduce a latent variable $z$ with an 1-of-M representation 
+in which a particular element $z_k$ is one and all the rest are zero.
+So from this and from the statement of the problem we have:
 \begin{align*}
-\pi_k p(x \mid \mu_k) = \prod_{j=1}^M \mu_k (j)^{x(j)}
+\sum_{k=1}^K z_k =1\\
+\sum_{j=1}^M x_j =1\\
+\sum_{j=1}^M \mu_{k,j} =1\\
 \end{align*}
-The $z$ values (mixing coeffient) of having the same properties of Gaussian mixtures.
-So the $p( z_k = 1) = \pi_k$ for which $\sum_{k=1}^k \pi_k = 1$
+The $\pi_k$ values (mixing coeffient) of having the same properties of Gaussian mixtures.
 The marginal distribution $p(z)$ can be written as:
 \begin{align*}
-p(z) = \sum_{k=1}^K \pi_{k}^(z_k)
+p(z) = \sum_{k=1}^K \pi_{k}^{z_k}
 \end{align*}
 and
 \begin{align*}
-p(x_j =1 \mid z=k) = p(x\mid z=k) \mu_l
+p(x_j =1 \mid z=k) = p(x\mid z=k) = \mu_{k,j}
 \end{align*}
 Using this equations we have 
 \begin{align*}
-p(x\mid z) = \prod_{k=1}^K (\mu_{k})^ z_{k}
+p(x\mid z) = \prod_{k=1}^K (\mu_{k})^{z_{k}}
 \end{align*}
 So combining all these:
-$p(x) = \sum_{k=1}^K p(z)p(x\mid z) = \sum_{k=1}^K \pi_k \mu_k$
+$p(x) = \sum_{k=1}^K p(z)p(x\mid z) = \sum_{k=1}^K \pi_k\prod_{k=1}^K \mu_k$
 \subsection*{E-step}
-For the E step we have to calculate the $t_nj$ as we see in the problem statement.
-By Bayes' Rule we have
-$t_nj=p(z_n =j \mid x_n,\theta) = p(z_n =j)p(x\mid z_n,\theta)$
+For the E step we have to calculate the $t_{n,j}$ as we see in the problem statement.
+$t_{n,j}=p(z_n =j \mid x_n,\theta) = \frac{p(z_n =j)p(x\mid z_n,\theta)}{p(x_n,\theta)}$
 if we plug the densities we already have:
 \begin{align*}
-p(z_n =j \mid x_n,\theta) = \frac{\pi_j \cdot \mu_j}{\sum_{l=1}^K \pi_l \mu_l}
+t_{n,k} = \frac{\pi_k \cdot\prod_{j=1}^M \mu_{k,j}^{x_{k,n}}}{\sum_{k'=1}^K \pi_k \prod_{j=1}^M \mu_{k',j}^{x_{j,n}}}
 \end{align*}
 \subsection*{M-step}
-Using the $t$ from E-step we will re-calculate our model $\theta$.
-$t_nj=\frac{\pi_j \cdot \mu_j}{\sum_{l=1}^K \pi_l \mu_l}$
-So $\theta_j = \frac{\sum_{i=1}^n x_{i} t_i}{M\sum_{i=1}^n t_{i}}$.
+Using $t_{n,k}$ and the likelihood we will derive the parameters from the using the current E-step value.
+We will maximize the log likehood using $t$ by taking partial derivatives.\\
+$L = \sum_{n=1}^N\sum_{k=1}^K t_{n,k}\log(\frac{P(x_n,z_n=k\mid\theta)}{t_{n,k}})$\\
+From the first equations we can rewirte this as:\\
+$L = \sum_{n=1}^N\sum_{k=1}^K t_{n,k}\log( \pi_{k} \prod_{j=1}^M \mu_{k,j}^{x_{j,n}})$\\
+$L = \sum_{n=1}^N\sum_{k=1}^K t_{n,k}(\log \pi_{k} - \log t_{n,k} + \sum_{j=1}^M x_{j,n}\log\mu_{k,j}$\\
 
+Then we will add the Lagranian multipliers with the constrain $\sum_{j=1}^M \mu_{k,j} =1$
+\begin{align*}
+L = \sum_{n=1}^N\sum_{k=1}^K t_{n,k}(\log \pi_{k} - \log t_{n,k} + \sum_{j=1}^M x_{j,n}\log\mu_{k,j} - \lambda\sum_{j'=1}^M \mu_{k,j'}
+\end{align*}
 
+Taking partial derivative for $\mu_{k,j}$ we have
+\begin{align*}
+\frac{\partial L}{\partial \mu_{k',j'} } &= \frac{\partial \sum_{n=1}^N\sum_{k=1}^K t_{n,k}(\sum_{j=1}^M x_{j,n}\log\mu_{k,j}) 
+- \lambda\sum_{j'=1}^M \mu_{k,j'}}{\partial \mu_{k',j'}}\\
+&= \sum_{n=1}^N t_{n,k} x_{j,n} \frac{1}{\mu_{k,j}} - \lambda = 0\\
+\mu_{k,j} &= \lambda \sum_{n=1}^N t_{n,k} x_{j,n}
+\end{align*}
+So $\lambda =\sum_{j=1}^M \sum_{n=1}^N t_{n,k} x_{j,n}$\\
+And we get $\mu_{k,j} = \frac{\sum_{n=1}^N t_{n,k} x_{j,n}}{\sum_{j=1}^M \sum_{n=1}^N t_{n,k} x_{j,n}}$
+With similar steps we will get the partial derivative for $\pi_k$ in order to find $\pi_k$
+\begin{align*}
+\frac{\partial L}{\partial \pi_k} &= \sum_{n=1}^N \sum_{k=1}^K \frac{t_{n,k}}{\pi_k} - \lambda =0\\
+\lambda &= \frac{1}{\pi_k} \sum_{n=1}^N t_{n,k} \Rightarrow\\
+\pi_k &= \sum_{n=1}^N\frac{t_{n,k}}{\lambda}\\
+\lambda &= \sum_{k=1}^K\sum_{n=1}^N t_{n,k}
+\end{align*}
+So we have $\pi_k = \frac{\sum_{n=1}^N t_{n,k}}{\sum_{k=1}^K\sum_{n=1}^N t_{n,k}}$
+With this values we check if converges in every iteration. It converges we stop otherwise we continue for one more step.
