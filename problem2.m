@@ -1,4 +1,4 @@
-function coins = mine(M)
+function coins = problem2(M)
 %
 
 if nargin < 1
@@ -26,6 +26,7 @@ for i=1:M
         train_l(j) = tmp_train_l(end);
         test_l(j) = log_l(test,theta,p_k);
     end
+    theta
     average_train(i) = mean(train_l);
     average_test(i) = mean(test_l);
     stdev_train(i) = std2(train_l);
