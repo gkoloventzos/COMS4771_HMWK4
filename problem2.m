@@ -5,7 +5,7 @@ if nargin < 1
     M=5;
 end
 
-dataset = importdata('../data/problem2forHW4.mat');
+dataset = importdata('./problem2forHW4.mat');
 %load('problem2forHW4.mat');
 N=size(dataset,1);
 

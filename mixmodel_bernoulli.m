@@ -37,7 +37,7 @@ while (iter<maxiter) & ~converged
       l_n=sum(tau(n,:));
       tau(n,:)=tau(n,:)/l_n;
       for i=1:M
-          ll = ll + tau(n,i) + (log(theta(i))*heads(n)) + (log(1-theta(i))*(D-heads(n))) + log(p_k(i));
+          ll = ll + tau(n,i) *(log(theta(i))*(heads(n))+(log(1-theta(i))*(D-heads(n))) + log(p_k(i)));
       end
   end
   
